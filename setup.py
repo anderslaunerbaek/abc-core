@@ -1,12 +1,17 @@
 import setuptools
 
+pacakge_name = "abc_core"
+
+
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 with open("VERSION", "r", encoding="utf-8") as fh:
     version_number = fh.read()
+with open("requirements.txt", "r", encoding="utf-8") as fh:
+    install_requires = fh.read().splitlines()
 
 setuptools.setup(
-    name="abc-core",
+    name=pacakge_name,
     version=version_number,
     author="Anders Launer Baek-Petersen",
     author_email="anderslaunerbaek@gmail.com",
@@ -22,7 +27,8 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "abc-core"},
-    packages=setuptools.find_packages(where="abc-core"),
+    packages=setuptools.find_packages(),
+    install_requires=install_requires,
     python_requires=">=3.9",
+    test_suite='tests/',
 )

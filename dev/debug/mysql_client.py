@@ -1,40 +1,12 @@
 
 import logging
-from dataclasses import dataclass
-from typing import Any
 
-from mysql.connector import MySQLConnection, connect
+from abc_core.database.mysql_client import MySQL
+from abc_core.utils.logger_client import get_basis_logger_config
 
-from core_client import DBCore
-
-
-@dataclass
-class MySQL(DBCore):
-    database: str
-    host: str
-    port: int
-    user: str
-    password: str
-
-    def _create_connection(self) -> MySQLConnection:
-        
-        logging.info("Calling _create_connection")
-        return connect(
-            database = self.database, 
-            host = self.host, 
-            port = self.port, 
-            user = self.user, 
-            password = self.password,
-            # TODO
-            auth_plugin='mysql_native_password'
-            )
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s.%(msecs)03d:%(levelname)s:%(module)s:%(funcName)s:%(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    logging.basicConfig(**get_basis_logger_config())
 
     database: str = "test"
     host: str = "172.31.220.220"
