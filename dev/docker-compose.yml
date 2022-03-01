@@ -1,0 +1,160 @@
+# Inspiration from: https://github.com/confluentinc/kafka-workshop/blob/master/docker-compose.yml
+version: "3"
+
+services:
+    db: 
+        image: mysql:8.0.25
+        #command: --default-authentication-plugin=mysql_native_password
+        container_name: MYSQLDB
+        volumes:
+          - /home/alp/mysql:/var/lib/mysql
+        restart: always
+        environment:
+        #   MYSQL_USER: root
+            MYSQL_ROOT_PASSWORD: root
+        #   MYSQL_ROOT_PASSWORD: "$MYSQL_DAM_DB_ROOT_PASSWORD"
+        #   MYSQL_DATABASE: test
+        #   MYSQL_USER: "$MYSQL_DAM_DB_USER"
+        #   MYSQL_PASSWORD: "$MYSQL_DAM_DB_PASSWORD"   
+        ports:
+        - "33060:3306" 
+    postgresdb: 
+        image: postgres:14-alpine3.15
+        #command: --default-authentication-plugin=mysql_native_password
+        container_name: POSTGRESDB
+        volumes:
+          - /home/alp/postgres:/var/lib/postgresql/data
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: example   
+            POSTGRES_USER: test
+            POSTGRES_DB: test
+        ports:
+        - "54320:5432"   
+
+    # zookeeper:
+    #     image: confluentinc/cp-zookeeper:5.4.4
+    #     container_name: zookeeper
+    #     restart: always
+    #     environment:
+    #       ZOOKEEPER_SERVER_ID: 1
+    #       ZOOKEEPER_CLIENT_PORT: "2181"
+    #       ZOOKEEPER_TICK_TIME: "2000"
+    #       ZOOKEEPER_SERVERS: "zookeeper:22888:23888"
+    #     ports:
+    #       - "2181:2181"
+    #     volumes:
+    #         - ./containervolumes/zookeeper-data:/var/lib/zookeeper/data
+    #         - ./containervolumes/zookeeper-logs:/var/lib/zookeeper/log
+    #         - ./containervolumes/zookeeper-secrets:/etc/zookeeper/secrets
+            
+    # kafka:
+    #     # image: confluentinc/cp-enterprise-kafka:latest
+    #     image: confluentinc/cp-kafka:5.4.4
+    #     container_name: kafka
+    #     restart: always
+    #     depends_on:
+    #         - zookeeper
+    #     ports:
+    #     # Exposes 29092 for external connections to the broker
+    #     # Use kafka1:9092 for connections internal on the docker network
+    #     # See https://rmoff.net/2018/08/02/kafka-listeners-explained/ for details
+    #         - "29092:29092"
+    #     environment:
+    #         KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+    #         KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    #         KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    #         KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://$KAFKA_HOST:$KAFKA_PORT"
+    #         KAFKA_BROKER_ID: 1
+    #         KAFKA_BROKER_RACK: "r1"
+    #         KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    #         KAFKA_DELETE_TOPIC_ENABLE: "true"
+    #         KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    #         KAFKA_SCHEMA_REGISTRY_URL: "schemaregistry:8081"
+    #         #KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+    #         KAFKA_JMX_PORT: 9991
+    #     volumes:
+    #         - ./containervolumes/kafka-data:/var/lib/kafka/data
+    #         - ./containervolumes/kafka-secrets:/etc/kafka/secrets
+
+    # schemaregistry:
+    #     image: confluentinc/cp-schema-registry:latest
+    #     container_name: schemaregistry
+    #     restart: always
+    #     depends_on:
+    #         - zookeeper
+    #     environment:
+    #         SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
+    #         SCHEMA_REGISTRY_HOST_NAME: schemaregistry
+    #         SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+    #     ports:
+    #         - 8081:8081
+    #     volumes:
+    #         - ./containervolumes/schema-registry-secrets:/etc/schema-registry/secrets
+    
+    # restproxy:
+    #     image: confluentinc/cp-kafka-rest:5.4.4
+    #     container_name: restproxy
+    #     restart: always
+    #     depends_on:
+    #         - kafka
+    #     environment:
+    #         KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper:2181"
+    #         KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+    #         KAFKA_REST_BOOTSTRAP_SERVERS: "kafka:9092"
+    #         KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
+    #         KAFKA_REST_HOST_NAME: restproxy
+    #         KAFKA_REST_DEBUG: "false"
+    #     ports:
+    #         - 8082:8082
+    
+    # kafka-ui:
+    #     image: provectuslabs/kafka-ui
+    #     container_name: kafka-ui
+    #     ports:
+    #         - "8080:8080"
+    #     restart: always
+    #     environment:
+    #         - KAFKA_CLUSTERS_0_NAME=local
+    #         - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    #         - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    #         - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=schemaregistry:8081
+    #     volumes:
+    #         - ./containervolumes/kafka-ui-data:/rethinkdb_data
+    #         - ./containervolumes/kafka-ui-tmp:/tmp
+    
+    # # Documentation: https://hub.docker.com/_/mongo
+    # mongo:
+    #     image: mongo:latest
+    #     container_name: mongo
+    #     restart: always
+    #     ports:
+    #         - 27017:27017
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: "$MONGO_USERNAME"
+    #         MONGO_INITDB_ROOT_PASSWORD: "$MONGO_PASSWORD"
+    #     volumes:
+    #         - /home/alp/dev/abc-core/data/mongo-config:/data/configdb
+    #         - /home/alp/dev/abc-core/data/mongo-db:/data/db
+    
+    # # Documentation: https://github.com/mongo-express/mongo-express
+    # mongo-express:
+    #     image: mongo-express:latest
+    #     container_name: mongo-express
+    #     restart: always
+    #     ports:
+    #         - 8090:8081
+    #     environment:
+    #         ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+    #         ME_CONFIG_MONGODB_ADMINUSERNAME: "$MONGO_USERNAME"
+    #         ME_CONFIG_MONGODB_ADMINPASSWORD: "$MONGO_PASSWORD"
+    #         ME_CONFIG_BASICAUTH_USERNAME: "$MONGO_EXPRESS_USERNAME"
+    #         ME_CONFIG_BASICAUTH_PASSWORD: "$MONGO_EXPRESS_PASSWORD"
+    #         #ME_CONFIG_MONGODB_AUTH_DATABASE: "$MONGO_EXPRESS_DATABASE"
+    #         #ME_CONFIG_MONGODB_AUTH_USERNAME: "$MONGO_EXPRESS_USERNAME"
+    #         #ME_CONFIG_MONGODB_AUTH_PASSWORD: "$MONGO_EXPRESS_PASSWORD"
+    #         ME_CONFIG_OPTIONS_READONLY: "true"
+
+networks: 
+    default:
+        name: core-services-network
