@@ -1,4 +1,3 @@
-
 import logging
 
 from abc_core.database.sqllite_client import SQLLite
@@ -7,8 +6,7 @@ from abc_core.utils.logger_client import get_basis_logger_config
 
 def main():
     logging.basicConfig(**get_basis_logger_config())
-    db = SQLLite(filename="../../data/application.db") 
-
+    db = SQLLite(filename="../../data/application.db")
 
     res = db.select("SELECT * FROM blogs1")
     print(res)
@@ -23,5 +21,7 @@ def main():
 
     # (id text not null primary key, date text, title text, content text, public integer
     db.close_connection()
+
+
 if __name__ == "__main__":
     main()

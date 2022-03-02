@@ -2,7 +2,7 @@
 version: "3"
 
 services:
-    db: 
+    db:
         image: mysql:8.0.25
         #command: --default-authentication-plugin=mysql_native_password
         container_name: MYSQLDB
@@ -15,10 +15,10 @@ services:
         #   MYSQL_ROOT_PASSWORD: "$MYSQL_DAM_DB_ROOT_PASSWORD"
         #   MYSQL_DATABASE: test
         #   MYSQL_USER: "$MYSQL_DAM_DB_USER"
-        #   MYSQL_PASSWORD: "$MYSQL_DAM_DB_PASSWORD"   
+        #   MYSQL_PASSWORD: "$MYSQL_DAM_DB_PASSWORD"
         ports:
-        - "33060:3306" 
-    postgresdb: 
+        - "33060:3306"
+    postgresdb:
         image: postgres:14-alpine3.15
         #command: --default-authentication-plugin=mysql_native_password
         container_name: POSTGRESDB
@@ -26,11 +26,11 @@ services:
           - /home/alp/postgres:/var/lib/postgresql/data
         restart: always
         environment:
-            POSTGRES_PASSWORD: example   
+            POSTGRES_PASSWORD: example
             POSTGRES_USER: test
             POSTGRES_DB: test
         ports:
-        - "54320:5432"   
+        - "54320:5432"
 
     # zookeeper:
     #     image: confluentinc/cp-zookeeper:5.4.4
@@ -47,7 +47,7 @@ services:
     #         - ./containervolumes/zookeeper-data:/var/lib/zookeeper/data
     #         - ./containervolumes/zookeeper-logs:/var/lib/zookeeper/log
     #         - ./containervolumes/zookeeper-secrets:/etc/zookeeper/secrets
-            
+
     # kafka:
     #     # image: confluentinc/cp-enterprise-kafka:latest
     #     image: confluentinc/cp-kafka:5.4.4
@@ -91,7 +91,7 @@ services:
     #         - 8081:8081
     #     volumes:
     #         - ./containervolumes/schema-registry-secrets:/etc/schema-registry/secrets
-    
+
     # restproxy:
     #     image: confluentinc/cp-kafka-rest:5.4.4
     #     container_name: restproxy
@@ -107,7 +107,7 @@ services:
     #         KAFKA_REST_DEBUG: "false"
     #     ports:
     #         - 8082:8082
-    
+
     # kafka-ui:
     #     image: provectuslabs/kafka-ui
     #     container_name: kafka-ui
@@ -122,7 +122,7 @@ services:
     #     volumes:
     #         - ./containervolumes/kafka-ui-data:/rethinkdb_data
     #         - ./containervolumes/kafka-ui-tmp:/tmp
-    
+
     # # Documentation: https://hub.docker.com/_/mongo
     # mongo:
     #     image: mongo:latest
@@ -136,7 +136,7 @@ services:
     #     volumes:
     #         - /home/alp/dev/abc-core/data/mongo-config:/data/configdb
     #         - /home/alp/dev/abc-core/data/mongo-db:/data/db
-    
+
     # # Documentation: https://github.com/mongo-express/mongo-express
     # mongo-express:
     #     image: mongo-express:latest
@@ -155,6 +155,6 @@ services:
     #         #ME_CONFIG_MONGODB_AUTH_PASSWORD: "$MONGO_EXPRESS_PASSWORD"
     #         ME_CONFIG_OPTIONS_READONLY: "true"
 
-networks: 
+networks:
     default:
         name: core-services-network

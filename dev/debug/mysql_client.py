@@ -1,4 +1,3 @@
-
 import logging
 
 from abc_core.database.mysql_client import MySQL
@@ -14,13 +13,7 @@ def main():
     user: str = "root"
     password: str = "root"
 
-    db = MySQL(
-        database = database,
-        host= host, 
-        port=port, 
-        user=user,
-        password = password) 
-
+    db = MySQL(database=database, host=host, port=port, user=user, password=password)
 
     # res = db.select("SELECT * FROM test")
     # print(res)
@@ -29,7 +22,13 @@ def main():
     #         query="INSERT INTO test(comment) VALUES (%s)",
     #         data=(f'private-blog{i+10}',)
     #     )
-    res = db.update("UPDATE test SET comment=%s WHERE id=%s;", ("value21",101,))
+    res = db.update(
+        "UPDATE test SET comment=%s WHERE id=%s;",
+        (
+            "value21",
+            101,
+        ),
+    )
     res = db.select("SELECT * FROM test where id=101")
     print(res)
     res = db.select("SELECT * FROM test where id=%s;", (101,))
@@ -37,6 +36,7 @@ def main():
 
     # (id text not null primary key, date text, title text, content text, public integer
     db.close_connection()
+
 
 if __name__ == "__main__":
     main()
