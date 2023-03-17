@@ -1,2 +1,4 @@
 mysql-connector-python==8.0.28
 psycopg2-binary==2.9.3
+fastavro
+confluent-kafka
